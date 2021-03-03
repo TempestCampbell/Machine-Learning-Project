@@ -1,2 +1,2 @@
-# Machine-Learning-Project
-machine learning weather influence on wine points
+# Project2
+Vino Tinto

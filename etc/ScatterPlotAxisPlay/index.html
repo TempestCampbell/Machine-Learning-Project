@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<link data-require="bootstrap-css@*" data-semver="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+	<script data-require="d3@*" data-semver="3.4.6" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+	<script data-require="crossfilter@*" data-semver="3.0.0" src="//cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.1/crossfilter.min.js"></script>
+	<link rel="stylesheet" href="d3.slider.css"/>
+	<script src="d3.slider.js"></script>
+	<link rel="stylesheet" href="style.css"/>
+	<script src="dc.js"></script>
+</head>
+
+<body>
+  
+  	<div class="main">
+		<h2>Age
+			<span id="slider3textmin">0</span> - <span id="slider3textmax">0</span>
+		</h2>
+
+		<div id="slider3" class="d3-slider d3-slider-horizontal"></div>
+		
+		<h2>Height
+			<span id="slider4textmin">0</span> - <span id="slider4textmax">0</span>
+		</h2>
+		
+		<div id="slider4" class="d3-slider d3-slider-horizontal"></div>
+
+		<table id="list" class="table table-hover dc-data-table dc-chart col-md-4" style="margin-top:5%;">
+			<thead>
+				<tr id="FieldNames" class="header" style="text-align:right;"></tr>
+			</thead>
+		</table>
+
+		<div class="dc-chart dc-data-count col-md-12" style="display: block; margin-bottom: 50px;">
+			<span>
+				<span class="filter-count"></span>
+					selected out of 
+				<span class="total-count"></span>
+					records | 
+				<a href="javascript: dimensionHeight.filter(null); dc.filterAll(); dc.renderAll();">Reset All</a>
+			</span>
+		</div>
+	</div>
+    
+    <script>
+      
+		var dataTable = dc.dataTable("table#list");
+		var dispatch = d3.dispatch('load','filterAge','filterHeight');
+
+		d3.json('data.json',function(json){
+			dispatch.load(json)
+		});
+
+		dispatch.on('load',function(json) {
+			var formatNumber = d3.format( ",d");
+			var facts = crossfilter(json);
+			var dimensionAge = facts.dimension(function(d) {
+				return +d.age;
+			});
+			var accessorAge = function(d) {
+				return d.age;
+			};
+			var dimensionHeight = facts.dimension(function(d) {
+				return +d.height;
+			});
+			var accessorHeight = function(d) {
+				return d.height;
+			};
+//			xf.add(json);
+			var range = d3.extent(json, accessorAge);
+			var range2 = d3.extent(json, accessorHeight);
+			var all = facts.groupAll();
+
+			d3.select("div#slider3")
+				.call(d3.slider().axis(true).min(range[0]).max(range[1]).value(range)
+				.on("slide", function(evt,value) {
+					dispatch.filterAge(value);
+					d3.select("#slider3textmin").text(Math.floor(value[0]));
+					d3.select("#slider3textmax").text(Math.floor(value[1]))
+				}))
+			
+			d3.select("div#slider4")
+				.call(d3.slider().axis(true).min(range2[0]).max(range2[1]).value(range2)
+				.on("slide", function(evt,value) {
+					dispatch.filterHeight(value);
+					d3.select("#slider4textmin").text(Math.floor(value[0]));
+					d3.select("#slider4textmax").text(Math.floor(value[1]))
+				}))
+
+
+			FieldNames = [
+				"",
+				"Age",
+				"Weight",
+				"Height",
+				"Eye Color",
+				"Hair Color",
+				"Race",
+				"Sex",
+				"Annual Income"
+			];
+
+			d3.select("tr#FieldNames").selectAll("th")
+				.data(FieldNames)
+				.enter()
+				.append("th") 
+				.append("text")
+				.text(function(d){ 
+					return d;
+				});
+
+			dataTable
+				.dimension(dimensionAge)
+				.group(function(d) {
+					return d.sex;
+				})
+				.columns([
+					function(d) {return "";},
+					function(d) {return d.age;},
+					function(d) {return d.weight;},
+					function(d) {return d.height;},
+					function(d) {return d.eyeColor;},
+					function(d) {return d.hairColor;},
+					function(d) {return d.race;},
+					function(d) {return d.sex;},
+					function(d) {return formatNumber(d.annualIncome);}
+				]);   
+
+			dispatch.on('filterAge',function(value){
+				dataTable.replaceFilter(dc.filters.RangedFilter(value[0], value[1]));
+				dataTable.redrawGroup();
+			})
+			dispatch.on('filterHeight',function(value){
+				dimensionHeight.filter([value[0], value[1]]);
+				dataTable.redrawGroup();
+			})
+
+			dc.dataCount(".dc-data-count")
+				.dimension(facts)
+				.group(all);
+
+			dc.renderAll();
+
+		});
+
+	</script>
+
+</body>
+
+</html>

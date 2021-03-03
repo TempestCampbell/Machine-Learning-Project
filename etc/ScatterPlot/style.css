@@ -1,0 +1,38 @@
+.chart::before {
+  position: absolute;
+  top: -20px;
+  left: 75px;
+  z-index: -1;
+  display: block;
+  width: 900px;
+  height: 500px;
+  content: " ";
+  background-image: url("grapes.jpg");
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  background-size: cover;
+  opacity: 0.2;
+}
+
+.tooltip {
+    position: fixed;
+    width: 200px;
+    height: 75px;
+    padding: 2px;
+    padding-top: 8px;
+    font: 11px sans-serif;
+    font-weight: bold;
+    color: rgb(214, 218, 24);
+    text-align: center;
+    background: #380059;
+    border: 0;
+    border-radius: 10px;
+  }
+  
+  .axisText {
+    font-family: sans-serif;
+    font-weight: bold;
+    fill: #380059;
+    text-anchor: middle;
+  }
+  
