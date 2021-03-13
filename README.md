@@ -2,14 +2,13 @@
 
 Predicting wine scores using temperature (low, high, average), precipitation, humidity, and cloudiness for each of the months during the average grape growing season (March-August). Multivariate Linear Regression, Support Vector Regression, and Neural Networks were used.
 
-Presentation: [Wine Point Predictions](https://docs.google.com/presentation/d/15VnzyvONVWltduQ95HDWQV4EQO8L-cu261JYZhkuWII/edit?usp=sharing)
+Presentation of Project Work: [Wine Point Predictions](https://docs.google.com/presentation/d/15VnzyvONVWltduQ95HDWQV4EQO8L-cu261JYZhkuWII/edit?usp=sharing)
 
 ## Project Work Outline
 - Multivariate Linear Regression
 - Support Vector Regression
 - Neural Networks
   - Non-Categorical:
-      The data proved to be inconclusive without categories by not providing an indication of improvement when adjusting the    following factors: Epochs, Number of Neurons(units), Layers, Change out the activation, and Loss functions.
   - Categorical
 
 ## Analysis
