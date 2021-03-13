@@ -12,7 +12,7 @@ Predicting wine scores using temperature (low, high, average), precipitation, hu
 - Support Vector Regression
 - Neural Networks
   - Non-Categorical:
-      The data proved to be inconclusive without categories byt not providing an indication of improvement when adjusting the    following factors: Epochs, Number of Neurons(units), Layers, Change out the activation, and Loss functions.
+      The data proved to be inconclusive without categories but not providing an indication of improvement when adjusting the    following factors: Epochs, Number of Neurons(units), Layers, Change out the activation, and Loss functions.
   - Categorical
 
 ## Conclusion
